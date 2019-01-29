@@ -62,7 +62,7 @@ rclient = require("redis-sharelatex").createClient(Settings.redis.realtime)
 app.get "/health_check/redis", (req, res, next) ->
 	rclient.healthCheck (error) ->
 		if error?
-			logger.err {err: error}, "failed redis health check"
+			logger.err {error}, "failed redis health check"
 			res.sendStatus 500
 		else
 			res.sendStatus 200
