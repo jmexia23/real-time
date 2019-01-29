@@ -12,11 +12,13 @@ COPY . /app
 
 RUN npm run compile:all
 
+
 FROM node:6.15.1
 
 COPY --from=app /app /app
 
 WORKDIR /app
-USER node
+USER root
+RUN apt-get update && apt-get install vim -y
 
 CMD ["node", "--expose-gc", "app.js"]
