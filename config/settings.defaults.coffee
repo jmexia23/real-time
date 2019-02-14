@@ -12,6 +12,7 @@ settings =
 			host: process.env['DOC_UPDATER_REDIS_HOST'] or process.env['REDIS_HOST'] or "localhost"
 			port: process.env['DOC_UPDATER_REDIS_PORT'] or process.env['REDIS_PORT'] or "6379"
 			password: process.env["DOC_UPDATER_REDIS_PASSWORD"] or process.env["REDIS_PASSWORD"] or ""
+			slotsRefreshInterval: 86400001
 			key_schema:
 				pendingUpdates: ({doc_id}) -> "PendingUpdates:{#{doc_id}}"
 
