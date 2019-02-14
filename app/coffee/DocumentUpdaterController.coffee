@@ -16,6 +16,16 @@ module.exports = DocumentUpdaterController =
 		rclient.on "message", (channel, message) ->
 			logger.log message:message, "got message from applied-ops channel" 
 			DocumentUpdaterController._processMessageFromDocumentUpdater(io, channel, message)
+		rclient.on "error", (err)->
+			logger.err err:err, "got error in applied-ops channel"
+		rclient.on "reconnecting", (err)->
+			logger.err err:err, "got reconnecting in applied-ops channel"
+		rclient.on "close", (err)->
+			logger.err err:err, "got close in applied-ops channel"
+		rclient.on "close", (err)->
+			logger.err err:err, "got close in applied-ops channel"
+		rclient.on "end", (err)->
+			logger.err err:err, "got end in applied-ops channel"
 		
 	_processMessageFromDocumentUpdater: (io, channel, message) ->
 		SafeJsonParse.parse message, (error, message) ->
