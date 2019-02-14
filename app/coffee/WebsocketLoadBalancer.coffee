@@ -26,6 +26,7 @@ module.exports = WebsocketLoadBalancer =
 	listenForEditorEvents: (io) ->
 		@rclientSub.subscribe "editor-events"
 		@rclientSub.on "message", (channel, message) ->
+			logger.log message:message, "got message from editor-events channel" 
 			WebsocketLoadBalancer._processEditorEvent io, channel, message
 
 	_processEditorEvent: (io, channel, message) ->

@@ -14,6 +14,7 @@ module.exports = DocumentUpdaterController =
 	listenForUpdatesFromDocumentUpdater: (io) ->
 		rclient.subscribe "applied-ops"
 		rclient.on "message", (channel, message) ->
+			logger.log message:message, "got message from applied-ops channel" 
 			DocumentUpdaterController._processMessageFromDocumentUpdater(io, channel, message)
 		
 	_processMessageFromDocumentUpdater: (io, channel, message) ->
