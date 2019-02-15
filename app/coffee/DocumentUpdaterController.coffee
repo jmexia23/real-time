@@ -27,10 +27,10 @@ module.exports = DocumentUpdaterController =
 		rclient.on "end", (err)->
 			logger.err err:err, "got end in applied-ops channel"
 		
-	_processMessageFromDocumentUpdater: (io, channel, message) ->
-		SafeJsonParse.parse message, (error, message) ->
+	_processMessageFromDocumentUpdater: (io, channel, jsonMessage) ->
+		SafeJsonParse.parse jsonMessage, (error, message) ->
 			if error?
-				logger.error {err: error, channel}, "error parsing JSON"
+				logger.error {err: error, channel, jsonMessage}, "error parsing JSON"
 				return
 			if message.op?
 				DocumentUpdaterController._applyUpdateFromDocumentUpdater(io, message.doc_id, message.op)

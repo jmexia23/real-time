@@ -122,13 +122,17 @@ if Settings.forceDrainMsDelay?
 
 prclient = redis.createClient(Settings.redis.documentupdater)
 srclient = redis.createClient(Settings.redis.documentupdater)
+opsclient = redis.createClient(Settings.redis.documentupdater)
 
 channel = "test-channel"
 publish = ->
 	d = new Date().toString() + Math.random().toString()
 	prclient.publish channel, d, (err,res)->
 		console.log(err, res, "published message", d)
-	setTimeout(publish, 1000 * 60)
+	json = JSON.stringify({health_check:true})
+	opsclient.publish "applied-ops", json, (err)->
+		console.log(err, json, "manual publish to applied-ops channel")
+		setTimeout(publish, 1000 * 60)
 
 publish()
 
