@@ -1,8 +1,8 @@
 Metrics = require("metrics-sharelatex")
 Settings = require "settings-sharelatex"
 Metrics.initialize(Settings.appName or "real-time")
+async = require("async")
 
-console.log Settings.redis
 
 logger = require "logger-sharelatex"
 logger.initialize("real-time")
@@ -120,25 +120,23 @@ if Settings.forceDrainMsDelay?
 
 
 
-prclient = redis.createClient(Settings.redis.documentupdater)
-srclient = redis.createClient(Settings.redis.documentupdater)
-opsclient = redis.createClient(Settings.redis.documentupdater)
+if Settings.continualPubsubTraffic
+	console.log "continualPubsubTraffic enabled"
 
-channel = "test-channel"
-publish = ->
-	d = new Date().toString() + Math.random().toString()
-	prclient.publish channel, d, (err,res)->
-		console.log(err, res, "published message", d)
-	json = JSON.stringify({health_check:true})
-	opsclient.publish "applied-ops", json, (err)->
-		console.log(err, json, "manual publish to applied-ops channel")
-		setTimeout(publish, 1000 * 60)
+	pubSubClient = redis.createClient(Settings.redis.documentupdater)
 
-publish()
+	publishJob = (channel, cb)->
+		json = JSON.stringify({health_check:true, date: new Date().toString()})
+		pubSubClient.publish json, channel, (err)->
+			if err?
+				logger.err {err, channel}, "error publishing pubsub traffic to redis"
+			cb(err)
 
-srclient.subscribe channel
-srclient.on "message", (channel, message)->
-	console.log "got message", channel, message
+	runPubSubTraffic = ->
+		async.map ["applied-ops", "editor-events"], publishJob, (err)->
+			setTimeout(runPubSubTraffic, 1000 * 60)
+
+	runPubSubTraffic()
 
 
 
