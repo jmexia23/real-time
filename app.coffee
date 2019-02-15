@@ -117,3 +117,24 @@ if Settings.forceDrainMsDelay?
 				logger.log signal: signal, "received interrupt, cleaning up"
 				shutdownCleanly(signal)
 				forceDrain()
+
+
+
+prclient = redis.createClient(Settings.redis.documentupdater)
+srclient = redis.createClient(Settings.redis.documentupdater)
+
+channel = "test-channel"
+publish = ->
+	d = new Date().toString() + Math.random().toString()
+	prclient.publish channel, d, (err,res)->
+		console.log(err, res, "published message", d)
+	setTimeout(publish, 1000 * 60)
+
+publish()
+
+srclient.subscribe channel
+srclient.on "message", (channel, message)->
+	console.log "got message", channel, message
+
+
+
