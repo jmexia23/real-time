@@ -97,7 +97,7 @@ module.exports = WebsocketController =
 				# doc to the client, so that no events are missed.
 				RoomManager.joinDoc client, doc_id, (error) ->
 					return callback(error) if error?
-					DocumentUpdaterManager.getDocument project_id, doc_id, fromVersion, (error, lines, version, ranges, ops) ->
+					DocumentUpdaterManager.getDocument project_id, doc_id, client.id, fromVersion, (error, lines, version, ranges, ops) ->
 						return callback(error) if error?
 
 						if is_restricted_user and ranges?.comments?
