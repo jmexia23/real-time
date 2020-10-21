@@ -10,7 +10,7 @@ Keys = settings.redis.documentupdater.key_schema
 module.exports = DocumentUpdaterManager =
 	getDocument: (project_id, doc_id, client_id, fromVersion, callback = (error, exists, doclines, version) ->) ->
 		timer = new metrics.Timer("get-document")
-		url = "#{settings.apis.documentupdater.url}/project/#{project_id}/doc/#{doc_id}?fromVersion=#{fromVersion}"
+		url = "#{settings.apis.documentupdater.url}/project/#{project_id}/doc/#{doc_id}/client/#{client_id}?fromVersion=#{fromVersion}"
 		logger.log {project_id, doc_id, fromVersion}, "getting doc from document updater"
 		request.get url, (err, res, body) ->
 			timer.done()
