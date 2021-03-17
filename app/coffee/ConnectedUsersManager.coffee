@@ -31,8 +31,12 @@ module.exports =
 		multi.hset Keys.connectedUser({project_id, client_id}), "email", user.email or ""
 		
 		if cursorData?
+			doc_id = cursorData.doc_id
 			multi.hset Keys.connectedUser({project_id, client_id}), "cursorData", JSON.stringify(cursorData)
+			multi.sadd Keys.clientsInDocument({doc_id}), client_id
+			multi.expire Keys.clientsInProject({doc_id}), USER_TIMEOUT_IN_S #VFC add users_in_document to Redis using cursorData.doc_id	
 		multi.expire Keys.connectedUser({project_id, client_id}), USER_TIMEOUT_IN_S
+	
 		
 		multi.exec (err)->
 			if err?
