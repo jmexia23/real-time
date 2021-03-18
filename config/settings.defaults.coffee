@@ -15,7 +15,7 @@ settings =
 				clientsInProject: ({project_id}) -> "clients_in_project:{#{project_id}}"
 				connectedUser: ({project_id, client_id})-> "connected_user:{#{project_id}}:#{client_id}"
 				#consistencyVector: ({project_id, client_id})-> "consistencyVector:{#{project_id}}:#{client_id}"
-				clientsInDocument: ({doc_id}) -> "clients_in_document:{#{doc_id}}"
+				clientsInDocument: ({doc_id}) -> "clients_in_document:#{doc_id}"
 			maxRetriesPerRequest: parseInt(process.env["REAL_TIME_REDIS_MAX_RETRIES_PER_REQUEST"] or process.env["REDIS_MAX_RETRIES_PER_REQUEST"] or "20")
 
 		documentupdater:
