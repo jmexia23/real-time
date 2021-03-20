@@ -74,7 +74,7 @@ module.exports = DocumentUpdaterController =
 				client.emit "otUpdateApplied", v: update.v, doc: update.doc
 			else if !update.dup # Duplicate ops should just be sent back to sending client for acknowledgement
 				logger.log doc_id: doc_id, version: update.v, source: update.meta?.source, client_id: client.id, "distributing update to collaborator"
-				client.emit "otUpdateApplied", update
+				#client.emit "otUpdateApplied", update
 		if Object.keys(seen).length < clientList.length
 			metrics.inc "socket-io.duplicate-clients", 0.1
 			logger.log doc_id: doc_id, socketIoClients: (client.id for client in clientList), "discarded duplicate clients"
