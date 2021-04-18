@@ -33,8 +33,8 @@ module.exports =
 		if cursorData?
 			doc_id = cursorData.doc_id
 			multi.hset Keys.connectedUser({project_id, client_id}), "cursorData", JSON.stringify(cursorData)
-			multi.sadd Keys.clientsInDocument({project_id, client_id}), client_id
-			multi.expire Keys.clientsInDocument({project_id, client_id}), USER_TIMEOUT_IN_S #VFC add users_in_document to Redis using cursorData.doc_id	
+			multi.sadd Keys.clientsInDocument({project_id, doc_id}), client_id
+			multi.expire Keys.clientsInDocument({project_id, doc_id}), USER_TIMEOUT_IN_S #VFC add users_in_document to Redis using cursorData.doc_id	
 		multi.expire Keys.connectedUser({project_id, client_id}), USER_TIMEOUT_IN_S
 	
 		
@@ -59,7 +59,7 @@ module.exports =
 		rclient.hget Keys.connectedUser({project_id, client_id}), cursorData , (err, result)->
 			if result?
 				doc_id = (result.JSON.parse).doc_id
-				rclient.srem Keys.clientsInDocument({project_id, client_id}), client_id
+				rclient.srem Keys.clientsInDocument({project_id, doc_id}), client_id
 		#VFC
 		multi = rclient.multi()
 		#VFC
