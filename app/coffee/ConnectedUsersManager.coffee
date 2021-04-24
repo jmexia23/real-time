@@ -62,9 +62,9 @@ module.exports =
 				rclient.srem Keys.clientsInDocument({doc_id}), client_id
 		#VFC
 		multi = rclient.multi()
-		#VFC
-		multi.hdel Keys.appliedUpdate({project_id, client_id, "*"}), "position"
-		multi.hdel Keys.appliedUpdate({project_id, client_id, "*"}), "length"
+		#VFC TODO
+		##multi.hdel Keys.appliedUpdate({project_id, client_id, "*"}), "position"
+		##multi.hdel Keys.appliedUpdate({project_id, client_id, "*"}), "length"
 		#VFC
 		multi.srem Keys.clientsInProject({project_id}), client_id
 		multi.expire Keys.clientsInProject({project_id}), FOUR_DAYS_IN_S

@@ -16,8 +16,7 @@ settings =
 				connectedUser: ({project_id, client_id})-> "connected_user:{#{project_id}}:#{client_id}"
 				#consistencyVector: ({project_id, client_id})-> "consistencyVector:{#{project_id}}:#{client_id}"
 				clientsInDocument: ({doc_id}) -> "clients_in_document:#{doc_id}"
-				appliedUpdate: ({project_id, client_id, update_id }) ->  "applied_update:#{project_id}:#{client_id}:#{update_id}" #VFC for deleting when user dc's
-			maxRetriesPerRequest: parseInt(process.env["REAL_TIME_REDIS_MAX_RETRIES_PER_REQUEST"] or process.env["REDIS_MAX_RETRIES_PER_REQUEST"] or "20")
+				appliedUpdate: ({doc_id, client_id, update_id }) ->  "applied_update:#{doc_id}:#{client_id}:#{update_id}"			maxRetriesPerRequest: parseInt(process.env["REAL_TIME_REDIS_MAX_RETRIES_PER_REQUEST"] or process.env["REDIS_MAX_RETRIES_PER_REQUEST"] or "20")
 
 		documentupdater:
 			host: process.env['DOC_UPDATER_REDIS_HOST'] or process.env['REDIS_HOST'] or "localhost"
