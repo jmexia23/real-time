@@ -56,7 +56,7 @@ module.exports =
 	markUserAsDisconnected: (project_id, client_id, callback)->
 		logger.log project_id:project_id, client_id:client_id, "marking user as disconnected"
 		#VFC remove clientsInDocument
-		rclient.hget Keys.connectedUser({project_id, client_id}), cursorData , (err, result)->
+		rclient.hget Keys.connectedUser({project_id, client_id}), "cursorData", (err, result)->
 			if result?
 				doc_id = (result.JSON.parse).doc_id
 				rclient.srem Keys.clientsInDocument({project_id, doc_id}), client_id
