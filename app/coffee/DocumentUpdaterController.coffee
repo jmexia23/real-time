@@ -88,6 +88,7 @@ module.exports = DocumentUpdaterController =
 
 	_sendUpdateToCollaborator: (io, doc_id, update, collaborators) -> #TODO collaborators = lista de um ou mais clientes a inserir no DocU
 		clientList = io.sockets.clients(doc_id)
+		logger.log collaborators, clientList, "client list"
 		seen = {}
 		for client in clientList when (not seen[client.id] && client.id in collaborators)
 			seen[client.id] = true
