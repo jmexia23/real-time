@@ -88,12 +88,15 @@ module.exports = DocumentUpdaterController =
 
 	_sendUpdateToCollaborator: (io, doc_id, update, collaborators) -> #TODO collaborators = lista de um ou mais clientes a inserir no DocU
 		clientList = io.sockets.clients(doc_id)
-		logger.log collaborators, clientList, "client list"
+		logger.log collaborators, "collaborators"
 		seen = {}
-		for client in clientList when (not seen[client.id] && client.id in collaborators)
-			seen[client.id] = true
-			logger.log doc_id: doc_id, version: update.v, source: update.meta?.source, client_id: client.id, "distributing update to collaborator"
-			client.emit "otUpdateApplied", update
+		for client in clientList #when (not seen[client.id]) && (client.id in collaborators)
+			logger.log client.id, "client.id"
+			logger.log client_id in collaborators, "in collabs"
+			if (not seen[client.id]) && (client.id in collaborators)
+				seen[client.id] = true
+				logger.log doc_id: doc_id, version: update.v, source: update.meta?.source, client_id: client.id, "distributing update to collaborator"
+				client.emit "otUpdateApplied", update
 
 	_processErrorFromDocumentUpdater: (io, doc_id, error, message) ->
 		for client in io.sockets.clients(doc_id)
