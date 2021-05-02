@@ -92,7 +92,7 @@ module.exports = DocumentUpdaterController =
 		seen = {}
 		for client in clientList #when (not seen[client.id]) && (client.id in collaborators)
 			logger.log client.id, "client.id"
-			logger.log client_id in collaborators, "in collabs"
+			logger.log client.id in collaborators, "in collabs"
 			if (not seen[client.id]) && (client.id in collaborators)
 				seen[client.id] = true
 				logger.log doc_id: doc_id, version: update.v, source: update.meta?.source, client_id: client.id, "distributing update to collaborator"
