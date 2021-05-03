@@ -42,13 +42,11 @@ module.exports = DocumentUpdaterController =
 				ChannelManager.unsubscribe rclient, "applied-ops", doc_id
 
 	_processMessageFromDocumentUpdater: (io, channel, message) ->
-		logger.log message, "got message in real-time"
 		SafeJsonParse.parse message, (error, message) ->
 			if error?
 				logger.error {err: error, channel}, "error parsing JSON"
 				return	
 			if message.clients?
-				logger.log "got update on real-time"
 				DocumentUpdaterController._sendUpdateToCollaborator(io, message.doc_id, message.op, message.clients) #TODO collaborators = lista de um ou mais clientes a inserir no DocU
 			else if message.op?
 				if message._id? && settings.checkEventOrder
@@ -90,12 +88,9 @@ module.exports = DocumentUpdaterController =
 		clientList = io.sockets.clients(doc_id)
 		logger.log collaborators, "collaborators"
 		seen = {}
-		for client in clientList #when (not seen[client.id]) && (client.id in collaborators)
-			logger.log client.id, "client.id"
-			logger.log client.id in collaborators, "in collabs"
+		for client in clientList when (not seen[client.id]) && (client.id in collaborators)
 			if (not seen[client.id]) && (client.id in collaborators)
 				seen[client.id] = true
-				logger.log update, "update format"
 				logger.log doc_id: doc_id, version: update.v, source: update.meta?.source, client_id: client.id, "distributing update to collaborator"
 				client.emit "otUpdateApplied", update
 
