@@ -58,7 +58,7 @@ module.exports =
 		#VFC remove clientsInDocument
 		rclient.hget Keys.connectedUser({project_id, client_id}), "cursorData", (err, result)->
 			if result?
-				doc_id = (result.JSON.parse).doc_id
+				doc_id = (JSON.parse(result)).doc_id
 				rclient.srem Keys.clientsInDocument({doc_id}), client_id
 		#VFC
 		multi = rclient.multi()
