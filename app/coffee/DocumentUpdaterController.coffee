@@ -89,10 +89,9 @@ module.exports = DocumentUpdaterController =
 		logger.log collaborators, "collaborators"
 		seen = {}
 		for client in clientList when (not seen[client.id]) && (client.id in collaborators)
-			if (not seen[client.id]) && (client.id in collaborators)
-				seen[client.id] = true
-				logger.log doc_id: doc_id, version: update.v, source: update.meta?.source, client_id: client.id, "distributing update to collaborator"
-				client.emit "otUpdateApplied", update
+			seen[client.id] = true
+			logger.log doc_id: doc_id, version: update.v, source: update.meta?.source, client_id: client.id, "distributing update to collaborator"
+			client.emit "otUpdateApplied", update
 
 	_processErrorFromDocumentUpdater: (io, doc_id, error, message) ->
 		for client in io.sockets.clients(doc_id)
